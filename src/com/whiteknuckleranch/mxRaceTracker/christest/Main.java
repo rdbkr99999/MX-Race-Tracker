@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package christest;
+package com.whiteknuckleranch.mxRaceTracker.christest;
 
-import dataobjects.Event;
-import dataobjects.EventClass;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.Event;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -19,10 +19,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.LineBorder;
-import tabs.EventsTab;
-import tabs.ResultsTab;
-import tabs.ScoringTab;
-import tabs.SignUpTab;
+import com.whiteknuckleranch.mxRaceTracker.tabs.EventsTab;
+import com.whiteknuckleranch.mxRaceTracker.tabs.ResultsTab;
+import com.whiteknuckleranch.mxRaceTracker.tabs.ScoringTab;
+import com.whiteknuckleranch.mxRaceTracker.tabs.SignUpTab;
 
 /**
  *

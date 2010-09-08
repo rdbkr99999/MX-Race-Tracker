@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package tabs;
+package com.whiteknuckleranch.mxRaceTracker.tabs;
 
-import christest.Main;
-import dataobjects.Event;
-import dataobjects.EventClass;
-import dataobjects.RaceEntry;
+import com.whiteknuckleranch.mxRaceTracker.christest.Main;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.Event;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.RaceEntry;
 import java.awt.BorderLayout;
 import java.util.Vector;
 import javax.swing.JPanel;

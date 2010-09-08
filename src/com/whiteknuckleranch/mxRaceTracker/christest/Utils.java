@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package christest;
+package com.whiteknuckleranch.mxRaceTracker.christest;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

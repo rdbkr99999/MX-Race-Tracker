@@ -3,14 +3,14 @@
  * and open the template in the editor.
  */
 
-package tabs;
+package com.whiteknuckleranch.mxRaceTracker.tabs;
 
-import cellrenderers.ClassListCellRenderer;
-import cellrenderers.RaceEntryListCellRenderer;
-import cellrenderers.RaceEntryMotoRenderer;
-import christest.Main;
-import dataobjects.EventClass;
-import dataobjects.RaceEntry;
+import com.whiteknuckleranch.mxRaceTracker.cellrenderers.ClassListCellRenderer;
+import com.whiteknuckleranch.mxRaceTracker.cellrenderers.RaceEntryListCellRenderer;
+import com.whiteknuckleranch.mxRaceTracker.cellrenderers.RaceEntryMotoRenderer;
+import com.whiteknuckleranch.mxRaceTracker.christest.Main;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.RaceEntry;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;

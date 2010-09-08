@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package christest;
+package com.whiteknuckleranch.mxRaceTracker.christest;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

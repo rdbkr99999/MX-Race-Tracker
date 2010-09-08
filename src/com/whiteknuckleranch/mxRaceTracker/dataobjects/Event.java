@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package dataobjects;
+package com.whiteknuckleranch.mxRaceTracker.dataobjects;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

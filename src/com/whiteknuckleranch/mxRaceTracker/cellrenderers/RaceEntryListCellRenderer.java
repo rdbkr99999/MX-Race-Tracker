@@ -3,9 +3,9 @@
  * and open the template in the editor.
  */
 
-package cellrenderers;
+package com.whiteknuckleranch.mxRaceTracker.cellrenderers;
 
-import dataobjects.RaceEntry;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.RaceEntry;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
