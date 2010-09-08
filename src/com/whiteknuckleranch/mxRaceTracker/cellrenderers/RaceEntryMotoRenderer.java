@@ -18,16 +18,20 @@ import javax.swing.ListCellRenderer;
  * @author assessor
  */
 public class RaceEntryMotoRenderer extends JLabel implements ListCellRenderer {
-        int moto = 0;
-        int position = 0;
-        int laps = 0;
+        private int moto = 0;
+        private int position = 0;
+        private int laps = 0;
+
         
-        ImageIcon greenFlag = new ImageIcon("C:\\Documents and Settings\\Administrator\\My Documents\\My Pictures\\green.PNG");
-        ImageIcon whiteFlag = new ImageIcon("C:\\Documents and Settings\\Administrator\\My Documents\\My Pictures\\white.PNG");
-        ImageIcon checkerFlag = new ImageIcon("C:\\Documents and Settings\\Administrator\\My Documents\\My Pictures\\checker.PNG");
+        private ImageIcon greenFlag = null;
+        private ImageIcon whiteFlag = null;
+        private ImageIcon checkerFlag = null;
     
         public RaceEntryMotoRenderer(int moto){
             this.moto = moto;
+            greenFlag = new ImageIcon(getClass().getResource("green.PNG"));
+            whiteFlag = new ImageIcon(getClass().getResource("white.PNG"));
+            checkerFlag = new ImageIcon(getClass().getResource("checker.PNG"));
         }
     
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
