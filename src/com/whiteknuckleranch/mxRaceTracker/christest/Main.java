@@ -69,9 +69,9 @@ public class Main {
     
     public void showGui(){
         //gather credentials
-//        dbHost = JOptionPane.showInputDialog("Database Hostname");
-//        dbUser = JOptionPane.showInputDialog("Enter db user");
-//        dbPassword = JOptionPane.showInputDialog("Enter db password");
+        dbHost = JOptionPane.showInputDialog("Database Hostname");
+        dbUser = JOptionPane.showInputDialog("Enter db user");
+        dbPassword = JOptionPane.showInputDialog("Enter db password");
         
         establishConnection();
         utils = new Utils(conn);

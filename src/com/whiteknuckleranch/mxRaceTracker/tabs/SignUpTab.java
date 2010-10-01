@@ -9,12 +9,15 @@ import com.whiteknuckleranch.mxRaceTracker.cellrenderers.ClassListCellRenderer;
 import com.whiteknuckleranch.mxRaceTracker.cellrenderers.RaceEntryListCellRenderer;
 import com.whiteknuckleranch.mxRaceTracker.cellrenderers.RacerListCellRenderer;
 import com.whiteknuckleranch.mxRaceTracker.christest.Main;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.Event;
 import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
 import com.whiteknuckleranch.mxRaceTracker.dataobjects.RaceEntry;
 import com.whiteknuckleranch.mxRaceTracker.dataobjects.Racer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Vector;
@@ -40,7 +43,7 @@ public class SignUpTab extends JPanel{
     Vector<Racer> racersVector = new Vector<Racer>();
     Vector<RaceEntry> selectedRacers = new Vector<RaceEntry>();
     Vector<EventClass> classVector = new Vector<EventClass>();
-    
+
     JPanel racerPanel = new JPanel(new BorderLayout());
     JPanel assignedPanel = new JPanel(new BorderLayout());
     JPanel centerPanel = new JPanel();
@@ -204,6 +207,7 @@ public class SignUpTab extends JPanel{
     }
     
     public void loadSelectedRacers(){
+        saveSignUp();
         selectedRacers.clear();
         try{
             if(classCombo.getSelectedIndex() >= 0){
@@ -226,4 +230,56 @@ public class SignUpTab extends JPanel{
             e.printStackTrace();
         }
     }
+
+    public void saveSignUp(){
+        Event event = null;
+        Vector<EventClass> classes = new Vector<EventClass>();
+        Vector<RaceEntry> entries = new Vector<RaceEntry>();
+
+        if(parent.getEvent() == null){
+            return;
+        }
+
+        try{
+            //set up writing to a file
+            FileWriter writer = new FileWriter("c:\\signup.html");
+            BufferedWriter out = new BufferedWriter(writer);
+
+
+            //get the event selected on the main page
+            event = parent.getEvent();
+
+            //get all the classes in the event
+            classes.addAll(EventClass.getRaceClasses(event.getId(), parent.conn));
+            
+            //set the title
+            out.write("<html><head><title>" + event.getName() + "</title></head><body><h1>" +
+                    event.getName() + ", " + event.getDate() + "</h1>");
+
+            //loop throough the classes and get the results
+            for(int i=0; i<classes.size(); i++){
+                out.write("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=3 align=center><b>" + classes.get(i).getName() + " - " + classes.get(i).getLaps() + " laps</b></td>\n\t</tr>\n");
+                out.write("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
+                        "\t\t<td width=20%>Mfg</td>\n\t</tr>\n");
+                entries.clear();
+                entries.addAll(RaceEntry.getAllEntries(classes.get(i).getId(), parent.conn));
+                for(int j=0; j<entries.size(); j++){
+                    out.write("\t<tr>\n");
+                    out.write("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
+                    out.write("\t</tr>\n");
+                }
+                out.write("</table>\n<br/>\n");
+                out.write("</html>");
+            }
+
+            //close the file
+            out.close();
+            writer.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
 }

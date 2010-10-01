@@ -29,9 +29,10 @@ public class RaceEntryMotoRenderer extends JLabel implements ListCellRenderer {
     
         public RaceEntryMotoRenderer(int moto){
             this.moto = moto;
-            greenFlag = new ImageIcon(getClass().getResource("green.PNG"));
-            whiteFlag = new ImageIcon(getClass().getResource("white.PNG"));
-            checkerFlag = new ImageIcon(getClass().getResource("checker.PNG"));
+            
+            greenFlag = new ImageIcon(getClass().getResource("/green.PNG"));
+            whiteFlag = new ImageIcon(getClass().getResource("/white.PNG"));
+            checkerFlag = new ImageIcon(getClass().getResource("/checker.PNG"));
         }
     
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

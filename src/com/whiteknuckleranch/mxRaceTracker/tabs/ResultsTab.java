@@ -10,6 +10,8 @@ import com.whiteknuckleranch.mxRaceTracker.dataobjects.Event;
 import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
 import com.whiteknuckleranch.mxRaceTracker.dataobjects.RaceEntry;
 import java.awt.BorderLayout;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,43 +39,73 @@ public class ResultsTab extends JPanel{
         add(mainScroll,BorderLayout.CENTER);
         
     }
-    
+
     public void updateResults(){
-        mainArea.setText("");
-        classes.clear();
-        entries.clear();
-        
-        //get the event selected on the main page
-        event = parent.getEvent();
-        
-        //get all the classes in the event
-        classes.addAll(EventClass.getRaceClasses(event.getId(), parent.conn));
-        
-        //set the title
-        mainArea.append("<h1>" + event.getName() + ", " + event.getDate() + "</h1>\n");
-        
-        //loop throough the classes and get the results
-        for(int i=0; i<classes.size(); i++){
-            mainArea.append("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=6 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
-            mainArea.append("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
-                    "\t\t<td width=20%>Mfg</td>\n\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+        try{
+            mainArea.setText("");
+            classes.clear();
             entries.clear();
-            entries.addAll(RaceEntry.getResults(classes.get(i).getId(), 2, parent.conn));
-            for(int j=0; j<entries.size(); j++){
-                mainArea.append("\t<tr>\n");
-                mainArea.append("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
-                mainArea.append("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
-                mainArea.append("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
-                mainArea.append("\t\t<td>" + entries.get(j).getMoto1Place() + "</td>\n");
-                mainArea.append("\t\t<td>" + entries.get(j).getMoto2Place() + "</td>\n");
-                mainArea.append("\t\t<td>" + entries.get(j).getFinalPlace() + "</td>\n");
-                mainArea.append("\t</tr>\n");
+
+            //set up writing to a file
+            FileWriter writer = new FileWriter("c:\\results.html");
+            BufferedWriter out = new BufferedWriter(writer);
+
+
+            //get the event selected on the main page
+            event = parent.getEvent();
+
+            //get all the classes in the event
+            classes.addAll(EventClass.getRaceClasses(event.getId(), parent.conn));
+
+            //set the title
+            mainArea.append("<h1>" + event.getName() + ", " + event.getDate() + "</h1>\n");
+            out.write("<html><head><title>" + event.getName() + "</title></head><body><h1>" + 
+                    event.getName() + ", " + event.getDate() + "</h1>");
+
+            //loop throough the classes and get the results
+            for(int i=0; i<classes.size(); i++){
+                mainArea.append("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=6 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
+                mainArea.append("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
+                        "\t\t<td width=20%>Mfg</td>\n\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+
+                out.write("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=6 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
+                out.write("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
+                        "\t\t<td width=20%>Mfg</td>\n\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+                entries.clear();
+                entries.addAll(RaceEntry.getResults(classes.get(i).getId(), 2, parent.conn));
+                for(int j=0; j<entries.size(); j++){
+                    mainArea.append("\t<tr>\n");
+                    mainArea.append("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
+                    mainArea.append("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
+                    mainArea.append("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
+                    mainArea.append("\t\t<td>" + entries.get(j).getMoto1Place() + "</td>\n");
+                    mainArea.append("\t\t<td>" + entries.get(j).getMoto2Place() + "</td>\n");
+                    mainArea.append("\t\t<td>" + entries.get(j).getFinalPlace() + "</td>\n");
+                    mainArea.append("\t</tr>\n");
+
+                    out.write("\t<tr>\n");
+                    out.write("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getMoto1Place() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getMoto2Place() + "</td>\n");
+                    out.write("\t\t<td>" + entries.get(j).getFinalPlace() + "</td>\n");
+                    out.write("\t</tr>\n");
+                }
+                mainArea.append("</table>\n<br/>\n");
+                out.write("</table>\n<br/>\n");
+                out.write("</html>");
             }
-            mainArea.append("</table>\n<br/>\n");
+
+            mainArea.setCaretPosition(0);
+
+            //close the file
+            out.close();
+            writer.close();
+            
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        
-        mainArea.setCaretPosition(0);
-        
         
     }
 

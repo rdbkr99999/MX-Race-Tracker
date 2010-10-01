@@ -129,24 +129,28 @@ public class ScoringTab extends JPanel{
         public void keyTyped(KeyEvent e) {}
 
         public void keyPressed(KeyEvent e) {
-            String[] fieldParts = new String[2];
-            if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                if(moto1Field.getText().contains("-")){
-                    fieldParts = moto1Field.getText().split("-");
-                }else{
-                    fieldParts[0] = moto1Field.getText();
+            try{
+                String[] fieldParts = new String[2];
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    if(moto1Field.getText().contains("-")){
+                        fieldParts = moto1Field.getText().split("-");
+                    }else{
+                        fieldParts[0] = moto1Field.getText();
+                    }
+                    RaceEntry re = (RaceEntry)racerMap.get(fieldParts[0]);
+                    //System.out.println(re.getRacer().getLastName());
+                    if(fieldParts[1] != null){
+                        re.subtractLap(0,parent.conn);
+                    }else{
+                        re.addLap(0,parent.conn);
+                    }
+                    moto1Field.setText("");
+
+                    updateMotoResults(0);
+                    updateMotoResults(2);
                 }
-                RaceEntry re = (RaceEntry)racerMap.get(fieldParts[0]);
-                //System.out.println(re.getRacer().getLastName());
-                if(fieldParts[1] != null){
-                    re.subtractLap(0,parent.conn);
-                }else{
-                    re.addLap(0,parent.conn);
-                }
-                moto1Field.setText("");
-                
-                updateMotoResults(0);
-                updateMotoResults(2);
+            }catch(Exception exc){
+                exc.printStackTrace();
             }
         }
 
@@ -158,24 +162,28 @@ public class ScoringTab extends JPanel{
         public void keyTyped(KeyEvent e) {}
 
         public void keyPressed(KeyEvent e) {
-            String[] fieldParts = new String[2];
-            if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                if(moto2Field.getText().contains("-")){
-                    fieldParts = moto2Field.getText().split("-");
-                }else{
-                    fieldParts[0] = moto2Field.getText();
+            try{
+                String[] fieldParts = new String[2];
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    if(moto2Field.getText().contains("-")){
+                        fieldParts = moto2Field.getText().split("-");
+                    }else{
+                        fieldParts[0] = moto2Field.getText();
+                    }
+                    RaceEntry re = (RaceEntry)racerMap.get(fieldParts[0]);
+                    //System.out.println(re.getRacer().getLastName());
+                    if(fieldParts[1] != null){
+                        re.subtractLap(1,parent.conn);
+                    }else{
+                        re.addLap(1,parent.conn);
+                    }
+                    moto2Field.setText("");
+
+                    updateMotoResults(1);
+                    updateMotoResults(2);
                 }
-                RaceEntry re = (RaceEntry)racerMap.get(fieldParts[0]);
-                //System.out.println(re.getRacer().getLastName());
-                if(fieldParts[1] != null){
-                    re.subtractLap(1,parent.conn);
-                }else{
-                    re.addLap(1,parent.conn);
-                }
-                moto2Field.setText("");
-                
-                updateMotoResults(1);
-                updateMotoResults(2);
+            }catch(Exception exc){
+                exc.printStackTrace();
             }
         }
 
