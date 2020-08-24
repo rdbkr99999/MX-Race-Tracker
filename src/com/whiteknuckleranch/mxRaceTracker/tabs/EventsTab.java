@@ -64,6 +64,46 @@ public class EventsTab extends JPanel{
         
     };
     
+    AbstractAction copyEventAction = new AbstractAction("Copy Event"){
+
+        public void actionPerformed(ActionEvent e) {
+            Event evt = new Event();
+            Event mainEvent = (Event) eventList.getSelectedValue();
+            
+            try{
+            
+                String name = JOptionPane.showInputDialog("Please enter event name");
+                String input = JOptionPane.showInputDialog("Please enter event date yyyy-mm-dd");
+
+                //basic date check
+                if(input.matches("\\d{4}-\\d{1,2}-\\d{1,2}")){
+                    evt.setName(name);
+                    evt.setDate(input);
+                    
+                    if(parent.establishConnection()){
+                        stmt = parent.conn.createStatement();
+                        stmt.execute(evt.getInsertSql());
+                        ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID();");
+                        rs.next();
+                        int newEventId = rs.getInt(1);
+                        Vector<EventClass> classes = EventClass.getRaceClasses(mainEvent.getId(), parent.conn);
+                        for(EventClass ec:classes) {
+                        	EventClass.insertRaceClass(newEventId, ec.getName(), ec.getLaps(), parent.conn);
+                        }
+                    }
+                    
+                    //repopulate the list
+                    getEvents();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Incorrect date format.");
+                }
+            }catch(Exception exc){
+                exc.printStackTrace();
+            }
+        }
+        
+    };
+    
     AbstractAction addClassAction = new AbstractAction("Add Class"){
 
         public void actionPerformed(ActionEvent e) {
@@ -150,6 +190,7 @@ public class EventsTab extends JPanel{
     JPanel eventTitlePanel = new JPanel(new BorderLayout());
     JPanel classTitlePanel = new JPanel(new BorderLayout());
     JButton eventAddButton = new JButton(addEventAction);
+    JButton eventCopyButton = new JButton(copyEventAction);
     JButton classAddButton = new JButton(addClassAction);
     JButton eventRemoveButton = new JButton(removeEventAction);
     JButton classRemoveButton = new JButton(removeClassAction);
@@ -165,7 +206,8 @@ public class EventsTab extends JPanel{
         //event side
         //eventTitlePanel.add(eventLabel,BorderLayout.NORTH);
         //eventTitlePanel.add(eventField,BorderLayout.CENTER);
-        eventTitlePanel.add(eventAddButton,BorderLayout.SOUTH);
+        eventTitlePanel.add(eventAddButton,BorderLayout.CENTER);
+        eventTitlePanel.add(eventCopyButton, BorderLayout.SOUTH);
         
         eventList.setCellRenderer(new EventListCellRenderer());
         eventList.addListSelectionListener(eventListListener);

@@ -21,7 +21,7 @@ public class RacerListCellRenderer extends JLabel implements ListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if(value instanceof Racer){
             Racer racer = (Racer)value;
-            setText(racer.getLastName() + ", " + racer.getFirstName() + " - " + racer.getRaceAge());
+            setText(racer.getLastName() + ", " + racer.getFirstName());
             
         }
         

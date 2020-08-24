@@ -42,36 +42,33 @@ public class RaceEntryMotoRenderer extends JLabel implements ListCellRenderer {
             if(moto == 0){
                 position = raceEntry.getMoto1Place();
                 laps = raceEntry.getMoto1Laps();
-                if(laps >= raceEntry.getEventClass().getLaps() - 1){
+                if(laps >= raceEntry.getEventClass().getLaps()){
                     setIcon(checkerFlag);
-                }else if(laps == raceEntry.getEventClass().getLaps() - 2){
+                }else if(laps == raceEntry.getEventClass().getLaps() - 1){
                     setIcon(whiteFlag);
                 }else{
                     setIcon(greenFlag);
                 }
                 setText(position + " - " + laps + " " + raceEntry.getRacer().getLastName() + ", " +
                     raceEntry.getRacer().getFirstName() + " - " +
-                    raceEntry.getBikeMfg() + " " +
                     raceEntry.getNumber());
             }else if(moto == 1){
                 position = raceEntry.getMoto2Place();
                 laps = raceEntry.getMoto2Laps();
-                if(laps >= raceEntry.getEventClass().getLaps() - 1){
+                if(laps >= raceEntry.getEventClass().getLaps()){
                     setIcon(checkerFlag);
-                }else if(laps == raceEntry.getEventClass().getLaps() - 2){
+                }else if(laps == raceEntry.getEventClass().getLaps() - 1){
                     setIcon(whiteFlag);
                 }else{
                     setIcon(greenFlag);
                 }
                 setText(position + " - " + laps + " " + raceEntry.getRacer().getLastName() + ", " +
                     raceEntry.getRacer().getFirstName() + " - " +
-                    raceEntry.getBikeMfg() + " " +
                     raceEntry.getNumber());
             }else{
                 position = raceEntry.getFinalPlace();
                 setText(position + " - " + raceEntry.getRacer().getLastName() + ", " +
                     raceEntry.getRacer().getFirstName() + " - " +
-                    raceEntry.getBikeMfg() + " " +
                     raceEntry.getNumber());
             }
             

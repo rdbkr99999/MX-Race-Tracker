@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project src with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR file Export Wizard-->
+    <!--ANT 1.7 is required-->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="C:/Users/chris/eclipse-workspace"/>
+    <property name="dir.jarfile" value="C:/Users/chris/Desktop"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/MX Tracker.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="com.whiteknuckleranch.mxRaceTracker.christest.Main"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ mysql-connector-java-5.1.49.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="${dir.buildfile}"/>
+            <zipfileset dir="C:/Users/chris/Documents/MX-Race-Tracker-origin/MX-Race-Tracker-origin/libs" includes="mysql-connector-java-5.1.49.jar"/>
+        </jar>
+    </target>
+</project>

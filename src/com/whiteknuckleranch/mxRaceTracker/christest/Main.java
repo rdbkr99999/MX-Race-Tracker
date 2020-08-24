@@ -5,24 +5,27 @@
 
 package com.whiteknuckleranch.mxRaceTracker.christest;
 
-import com.whiteknuckleranch.mxRaceTracker.dataobjects.Event;
-import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Vector;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.LineBorder;
+
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.Event;
+import com.whiteknuckleranch.mxRaceTracker.dataobjects.EventClass;
 import com.whiteknuckleranch.mxRaceTracker.tabs.EventsTab;
 import com.whiteknuckleranch.mxRaceTracker.tabs.ResultsTab;
 import com.whiteknuckleranch.mxRaceTracker.tabs.ScoringTab;
-import com.whiteknuckleranch.mxRaceTracker.tabs.SignUpTab;
+import com.whiteknuckleranch.mxRaceTracker.tabs.SignUpTab;	
 
 /**
  *
@@ -30,11 +33,16 @@ import com.whiteknuckleranch.mxRaceTracker.tabs.SignUpTab;
  */
 public class Main {
     
-    String schemaName = "chris_test";
+    String dbSchema = "chris_test";
     String dbHost = "localhost";
-    String dbUser = "root";
-    String dbPassword = "Tiw0S,wsIdw?";
-    //String dbPassword = "";
+    //String dbUser = "root";
+    //String dbPassword = "admin";
+    //String dbPassword = "Tiw0S,wsIdw?";
+    String dbPassword = "ABda08)#";
+    String dbUser = "mxtracker";
+    
+    
+    
     
     Event setEvent = null;
     EventClass setClass = null;
@@ -64,14 +72,18 @@ public class Main {
      */
     public static void main(String[] args) {
         Main main = new Main();
-        main.showGui();
+        main.showGui(main.dbHost, main.dbSchema, main.dbUser, main.dbPassword);
     }
     
-    public void showGui(){
+    public void showGui(String host, String schema, String user, String password){
         //gather credentials
-        dbHost = JOptionPane.showInputDialog("Database Hostname");
-        dbUser = JOptionPane.showInputDialog("Enter db user");
-        dbPassword = JOptionPane.showInputDialog("Enter db password");
+//        dbHost = JOptionPane.showInputDialog("Database Hostname");
+//        dbUser = JOptionPane.showInputDialog("Enter db user");
+//        dbPassword = JOptionPane.showInputDialog("Enter db password");
+    	dbHost = host;
+    	dbSchema = schema;
+        dbUser = user;
+        dbPassword = password;
         
         establishConnection();
         utils = new Utils(conn);
@@ -170,12 +182,19 @@ public class Main {
 //                String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 //                String dbName = StaticUtils.dbName;
 //                String connectionURL = "jdbc:derby:" + dbName;
-                Class.forName("org.gjt.mm.mysql.Driver");
-                System.out.println("jdbc:mysql://" + dbHost + "/" + schemaName + dbUser + dbPassword);
-                conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + "/" + schemaName,dbUser,dbPassword);
+                Class.forName("com.mysql.jdbc.Driver");
+                System.out.println("jdbc:mysql://" + dbHost + "/" + dbSchema + dbUser + dbPassword);
+                conn = DriverManager.getConnection("jdbc:mysql://" + dbHost + "/" + dbSchema +"?autoReconnect=true&useSSL=false",dbUser,dbPassword);
+            }catch(SQLException sqle) {
+            	// handle any errors
+                System.out.println("SQLException: " + sqle.getMessage());
+                System.out.println("SQLState: " + sqle.getSQLState());
+                System.out.println("VendorError: " + sqle.getErrorCode());
+                System.exit(0);
             }catch(Exception e){
                 JOptionPane.showMessageDialog(null, "Unable to connect to the database");
                 e.printStackTrace();
+                System.exit(0);
                 return false;
             }
         }

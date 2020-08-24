@@ -18,12 +18,16 @@ import javax.swing.ListCellRenderer;
  */
 public class RaceEntryListCellRenderer extends JLabel implements ListCellRenderer {
     
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7404496034401342370L;
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         if(value instanceof RaceEntry){
             RaceEntry raceEntry = (RaceEntry)value;
             setText(raceEntry.getRacer().getLastName() + ", " +
                     raceEntry.getRacer().getFirstName() + " - " +
-                    raceEntry.getBikeMfg() + " " +
                     raceEntry.getNumber());
             
             

@@ -19,8 +19,6 @@ public class RaceEntry {
     int id = 0;
     EventClass eventClass = null;
     Racer racer = null;
-    String bikeMfg = "";
-    String size = "";
     String number = "";
     int moto1Place = 0;
     int moto2Place = 0;
@@ -191,9 +189,7 @@ public class RaceEntry {
             tempEntry.setId(raceEntryId);
             tempEntry.setEventClass(EventClass.getRaceClass(rset.getInt("event_class_id"),conn));
             tempEntry.setRacer(Racer.getRacerById(rset.getInt("racer_id"), conn));
-            tempEntry.setBikeMfg(rset.getString("bike_mfg"));
-            tempEntry.setSize(rset.getString("size"));
-            tempEntry.setNumber(rset.getString("number"));
+           tempEntry.setNumber(rset.getString("number"));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -238,23 +234,7 @@ public class RaceEntry {
             }
             
             //get the inputs for the race
-            String bikeMfg = JOptionPane.showInputDialog(null,"Enter bike manufacturer");
-            if(bikeMfg == null || bikeMfg.length() == 0){
-                JOptionPane.showMessageDialog(null, "All fields are required");
-                return;
-            }
-            
-            String bikeSize = JOptionPane.showInputDialog(null,"Enter bike size (ie 250 2t, 450, 250f");
-            if(bikeSize == null || bikeSize.length() == 0){
-                JOptionPane.showMessageDialog(null, "All fields are required");
-                return;
-            }
-            
             String number = JOptionPane.showInputDialog(null, "Enter number (make sure it doesn't conflict, add an R if necessary)");
-            if(bikeMfg == null || bikeMfg.length() == 0){
-                JOptionPane.showMessageDialog(null, "All fields are required");
-                return;
-            }
             
             //make sure the number isn't duplicated
             stmt = conn.createStatement();
@@ -267,11 +247,9 @@ public class RaceEntry {
             
             //insert the entry
             stmt = conn.createStatement();
-            String sql = "insert into race_entry (event_class_id, racer_id, bike_mfg, size, number) values (" +
+            String sql = "insert into race_entry (event_class_id, racer_id, number) values (" +
                     eventClass.getId() + ", " +
                     racer.getId() + ", '" +
-                    bikeMfg + "', '" + 
-                    bikeSize + "', '" +
                     number + "')";
             stmt.execute(sql);
         }catch(Exception e){
@@ -285,6 +263,7 @@ public class RaceEntry {
         
         try{
             stmt = conn.createStatement();
+            stmt.execute("delete from laps where race_entry_id = " + re.getId());
             stmt.execute("delete from race_entry where id = " + re.getId());
         }catch(Exception e){
             e.printStackTrace();
@@ -312,15 +291,7 @@ public class RaceEntry {
         this.id = id;
     }
 
-    public String getBikeMfg() {
-        return bikeMfg;
-    }
-
-    public void setBikeMfg(String bikeMfg) {
-        this.bikeMfg = bikeMfg;
-    }
-
-    public EventClass getEventClass() {
+   public EventClass getEventClass() {
         return eventClass;
     }
 
@@ -342,14 +313,6 @@ public class RaceEntry {
 
     public void setRacer(Racer racer) {
         this.racer = racer;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public int getMoto1Laps() {

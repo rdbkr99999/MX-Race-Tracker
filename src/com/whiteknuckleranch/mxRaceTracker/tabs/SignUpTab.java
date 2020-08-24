@@ -16,6 +16,8 @@ import com.whiteknuckleranch.mxRaceTracker.dataobjects.Racer;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.sql.ResultSet;
@@ -133,6 +135,52 @@ public class SignUpTab extends JPanel{
         racerTopPanel.add(addRacerButton,BorderLayout.CENTER);
         
         racerList.setCellRenderer(new RacerListCellRenderer());
+        racerList.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					if(classCombo.getSelectedIndex() <= 0 ){
+		                JOptionPane.showMessageDialog(null, "Please select a class to add the racer to");
+		                return;
+		            }
+		            
+		            if(racerList.getSelectedIndex() < 0 ){
+		                JOptionPane.showMessageDialog(null, "Please select a racer to add to the class");
+		                return;
+		            }
+		            
+		            RaceEntry.createRaceEntry((Racer)racerList.getSelectedValue(), 
+		                    (EventClass)classCombo.getSelectedItem(), parent.conn);
+		            loadSelectedRacers();
+				}
+				
+			}
+		});
         racerPanel.add(racerTopPanel,BorderLayout.NORTH);
         racerPanel.add(new JScrollPane(racerList),BorderLayout.CENTER);
         racerPanel.add(deleteRacer,BorderLayout.SOUTH);
@@ -242,7 +290,7 @@ public class SignUpTab extends JPanel{
 
         try{
             //set up writing to a file
-            FileWriter writer = new FileWriter("c:\\signup.html");
+            FileWriter writer = new FileWriter("c:\\temp\\signup.html");
             BufferedWriter out = new BufferedWriter(writer);
 
 
@@ -253,21 +301,20 @@ public class SignUpTab extends JPanel{
             classes.addAll(EventClass.getRaceClasses(event.getId(), parent.conn));
             
             //set the title
-            out.write("<html><head><title>" + event.getName() + "</title></head><body><h1>" +
+            out.write("<html><head><title>" + event.getName() + "</title></head><body><img src=\"file:///C:/temp/WKR_Logo_Long.png\"><h1>" +
                     event.getName() + ", " + event.getDate() + "</h1>");
 
             //loop throough the classes and get the results
             for(int i=0; i<classes.size(); i++){
                 out.write("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=3 align=center><b>" + classes.get(i).getName() + " - " + classes.get(i).getLaps() + " laps</b></td>\n\t</tr>\n");
                 out.write("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
-                        "\t\t<td width=20%>Mfg</td>\n\t</tr>\n");
+                        "\t</tr>\n");
                 entries.clear();
                 entries.addAll(RaceEntry.getAllEntries(classes.get(i).getId(), parent.conn));
                 for(int j=0; j<entries.size(); j++){
                     out.write("\t<tr>\n");
                     out.write("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
                     out.write("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
-                    out.write("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
                     out.write("\t</tr>\n");
                 }
                 out.write("</table>\n<br/>\n");

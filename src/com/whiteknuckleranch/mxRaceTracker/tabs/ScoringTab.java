@@ -32,7 +32,12 @@ import javax.swing.border.TitledBorder;
  * @author assessor
  */
 public class ScoringTab extends JPanel{
-    Main parent = null;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2670713596012670110L;
+
+	Main parent = null;
     
     int raceClassId = -1;
     

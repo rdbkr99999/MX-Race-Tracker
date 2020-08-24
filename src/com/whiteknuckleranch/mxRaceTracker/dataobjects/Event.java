@@ -50,6 +50,7 @@ public class Event {
         
         try{
             stmt = conn.createStatement();
+//            stmt.execute("delete from event where id = " + evt.getId());
             stmt.execute("delete from event where id = " + evt.getId());
             
         }catch(Exception e){

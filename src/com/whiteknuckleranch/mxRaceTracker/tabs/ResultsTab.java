@@ -47,8 +47,14 @@ public class ResultsTab extends JPanel{
             entries.clear();
 
             //set up writing to a file
-            FileWriter writer = new FileWriter("c:\\results.html");
+            FileWriter writer = new FileWriter("c:\\temp\\all.html");
             BufferedWriter out = new BufferedWriter(writer);
+            
+            FileWriter resultsWriter = new FileWriter("c:\\temp\\results.html");
+            BufferedWriter resultsOut = new BufferedWriter(resultsWriter);
+            
+            FileWriter specWriter = null;
+            BufferedWriter specOut = null;
 
 
             //get the event selected on the main page
@@ -59,25 +65,41 @@ public class ResultsTab extends JPanel{
 
             //set the title
             mainArea.append("<h1>" + event.getName() + ", " + event.getDate() + "</h1>\n");
-            out.write("<html><head><title>" + event.getName() + "</title></head><body><h1>" + 
+            out.write("<html><head><title>" + event.getName() + "</title></head><body><img src=\"./WKR_Logo_Long.png\"><h1>" + 
                     event.getName() + ", " + event.getDate() + "</h1>");
+            
+            resultsOut.write("<html><head><title>" + event.getName() + "</title></head><body><img src=\"./WKR_Logo_Long.png\"><h1>" + 
+                    event.getName() + ", " + event.getDate() + "</h1>");
+            resultsOut.write("<a href=\"file:///c:/temp/all.html\">All</br>");
+        	
 
             //loop throough the classes and get the results
             for(int i=0; i<classes.size(); i++){
-                mainArea.append("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=6 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
+            	resultsOut.write("<a href=\"file:///c:/temp/"+ classes.get(i).getName().replace("/", "-") + ".html\">" + classes.get(i).getName() + "</br>");
+            	specWriter = new FileWriter("c:\\temp\\" + classes.get(i).getName().replace("/", "-") + ".html");
+            	specOut = new BufferedWriter(specWriter);
+            	
+            	 specOut.write("<html><head><title>" + event.getName() + "</title></head><body><img src=\"./WKR_Logo_Long.png\"><h1>" + 
+                         event.getName() + ", " + event.getDate() + "</h1>");
+            	
+                mainArea.append("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=5 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
                 mainArea.append("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
-                        "\t\t<td width=20%>Mfg</td>\n\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+                        "\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
 
-                out.write("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=6 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
+                out.write("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=5 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
                 out.write("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
-                        "\t\t<td width=20%>Mfg</td>\n\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+                        "\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+                
+                specOut.write("<table border=1 width=100%>\n\t<tr>\n\t\t<td colspan=5 align=center><b>" + classes.get(i).getName() + "</b></td>\n\t</tr>\n");
+                specOut.write("\t<tr>\n\t\t<td width=40%>Name</td>\n\t\t<td width=10%>Number</td>\n" +
+                        "\t\t<td width=10%>Moto 1</td>\n\t\t<td width=10%>Moto 2</td>\n\t\t<td width=10%>Final</td>\n\t</tr>\n");
+                
                 entries.clear();
                 entries.addAll(RaceEntry.getResults(classes.get(i).getId(), 2, parent.conn));
                 for(int j=0; j<entries.size(); j++){
                     mainArea.append("\t<tr>\n");
                     mainArea.append("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
                     mainArea.append("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
-                    mainArea.append("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
                     mainArea.append("\t\t<td>" + entries.get(j).getMoto1Place() + "</td>\n");
                     mainArea.append("\t\t<td>" + entries.get(j).getMoto2Place() + "</td>\n");
                     mainArea.append("\t\t<td>" + entries.get(j).getFinalPlace() + "</td>\n");
@@ -86,22 +108,40 @@ public class ResultsTab extends JPanel{
                     out.write("\t<tr>\n");
                     out.write("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
                     out.write("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
-                    out.write("\t\t<td>" + entries.get(j).getBikeMfg() + "</td>\n");
                     out.write("\t\t<td>" + entries.get(j).getMoto1Place() + "</td>\n");
                     out.write("\t\t<td>" + entries.get(j).getMoto2Place() + "</td>\n");
                     out.write("\t\t<td>" + entries.get(j).getFinalPlace() + "</td>\n");
                     out.write("\t</tr>\n");
+                    
+                    specOut.write("\t<tr>\n");
+                    specOut.write("\t\t<td>" + entries.get(j).getRacer().getLastName() + ", " + entries.get(j).getRacer().getFirstName() + "</td>\n");
+                    specOut.write("\t\t<td>" + entries.get(j).getNumber() + "</td>\n");
+                    specOut.write("\t\t<td>" + entries.get(j).getMoto1Place() + "</td>\n");
+                    specOut.write("\t\t<td>" + entries.get(j).getMoto2Place() + "</td>\n");
+                    specOut.write("\t\t<td>" + entries.get(j).getFinalPlace() + "</td>\n");
+                    specOut.write("\t</tr>\n");
                 }
                 mainArea.append("</table>\n<br/>\n");
                 out.write("</table>\n<br/>\n");
-                out.write("</html>");
+                
+                specOut.write("</table>\n<br/>\n");
+                specOut.write("</html>");
+                
+                specOut.close();
+                specWriter.close();
             }
 
             mainArea.setCaretPosition(0);
+            out.write("</html>");
+            
+            resultsOut.write("</html>");
 
             //close the file
             out.close();
             writer.close();
+            
+            resultsOut.close();
+            resultsWriter.close();
             
         }catch(Exception e){
             e.printStackTrace();

@@ -20,7 +20,6 @@ public class Racer {
     int id = -1;
     String firstName = "";
     String lastName = "";
-    String birthDay = "";
     
     //makes a new racer
     public static void makeNewRacer(Connection conn){
@@ -37,26 +36,20 @@ public class Racer {
                     JOptionPane.showMessageDialog(null, "All entries are required");
                     return;
                 }
-                String birthday = JOptionPane.showInputDialog(null, "Enter birthday (dd-mm-yyyy)");
-                if(birthday == null || birthday.length() == 0){
-                    JOptionPane.showMessageDialog(null, "All entries are required");
-                    return;
-                }
                 
                 //make sure they aren't identical to someone else
                 stmt = conn.createStatement();
                 rset = stmt.executeQuery("select count(*) from racers where " + 
                         "last_name = '" + lastName + "' and " +
-                        "first_name = '" + firstName + "' and " +
-                        "birthday = '" + birthday + "'");
+                        "first_name = '" + firstName + "'");
                 rset.next();
                 if(rset.getInt("count(*)") > 0){
                     JOptionPane.showMessageDialog(null, "An identical racer already exists in the database");
                 }
                 
                 stmt = conn.createStatement();
-                stmt.execute("insert into racers (last_name, first_name, birthday) values ('" + 
-                            lastName + "','" + firstName + "','" + birthday + "')");
+                stmt.execute("insert into racers (last_name, first_name) values ('" + 
+                            lastName + "','" + firstName + "')");
                 
             }catch(Exception exc){
                 exc.printStackTrace();
@@ -89,7 +82,6 @@ public class Racer {
             tempRacer.setId(id);
             tempRacer.setLastName(rset.getString("last_name"));
             tempRacer.setFirstName(rset.getString("first_name"));
-            tempRacer.setBirthDay(rset.getString("birthday"));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -136,26 +128,7 @@ public class Racer {
         
         return racers;
     }
-
-    //gets the racers race age, the age as of Jan 1 this year
-    public int getRaceAge(){
-        int age = 0;
-        
-        int birthYear = Integer.parseInt(birthDay.split("-")[2]);
-        int curYear = Calendar.getInstance().get(Calendar.YEAR);
-        age = curYear - birthYear - 1;
-        
-        return age;
-    }
     
-    public String getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(String birthDay) {
-        this.birthDay = birthDay;
-    }
-
     public String getFirstName() {
         return firstName;
     }
